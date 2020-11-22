@@ -15,7 +15,7 @@ Get stats from your letterboxd export zip file.
 - TV shows don't have runtime;
 - Ratings are not updated if they change.
 
-##Future developments
+## Future developments
 - Most liked Cast/Crew by avg ratings;
 - Filtering per year;
 - Map of nations.
