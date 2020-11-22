@@ -6,8 +6,8 @@ from os.path import isfile, join
 
 for file in os.listdir("input/"):
     if file.endswith(".zip"):
-        print("File da analizzare: " + str(file) +"?")
-        print("premi invio se si, altrimenti digita no")
+        print("File to analyze: " + str(file) +"?")
+        print("press enter if yes, otherwise type no")
         confirm = input()
         if confirm == "":
             nome_file = ("input/"+str(file))
@@ -18,7 +18,7 @@ with ZipFile(nome_file, 'r') as zip:
     zip.extract('ratings.csv', 'input/')
     zip.extract('diary.csv', 'input/')
     zip.extract('profile.csv', 'input/')
-    print("Estrazione ok")
+    print("Extraction ok")
 
 film = pd.read_csv("input/watched.csv")
 rate = pd.read_csv("input/ratings.csv")
@@ -33,7 +33,7 @@ rate = rate[['Letterboxd URI','Rating']]
 
 final = film.merge(rate, on='Letterboxd URI', how='left')
 
-print("Completato join")
+print("Join Complete!")
 #filename = "output/prova/letterboxd_joined.csv"
 #os.makedirs(os.path.dirname(filename), exist_ok=True)
 final.to_csv (r'output/letterboxd_joined.csv', index = False, header=True)

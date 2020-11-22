@@ -121,5 +121,3 @@ def filtering_op():
         name, pic = person_op(id)
         print(str(n + 1) + "\t" + str(name) + "\t" + str(filtering.at[n, 'sum']))
         n = n + 1
-
-filtering_op()
