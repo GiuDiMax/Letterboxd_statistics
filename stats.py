@@ -99,7 +99,10 @@ def filtering_op():
         print(str(n) + " for " + str(dict_crew[n]))
     filter = input()
     if int(filter) == 0:
-        pass
+        cast = pd.read_csv("output/cast_count.csv")
+        cast = pd.DataFrame(cast)
+        cast.columns = ['id','sum']
+        filtering = cast.head(10).reset_index()
 
     else:
         filter = dict_crew[int(filter)]
@@ -113,6 +116,10 @@ def filtering_op():
 
     n = 0
     for id in filtering['id']:
+        id = int(id)
+        id = str(id)
         name, pic = person_op(id)
         print(str(n + 1) + "\t" + str(name) + "\t" + str(filtering.at[n, 'sum']))
         n = n + 1
+
+filtering_op()
