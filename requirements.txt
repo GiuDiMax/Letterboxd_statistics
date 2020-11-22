@@ -1,4 +1,5 @@
 matplotlib==3.3.3
 tmdbsimple==2.6.6
 numpy==1.19.0
-pandas=1.1.4
+pandas==1.1.4
+urllib3==1.26.2
