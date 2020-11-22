@@ -12,3 +12,4 @@ Get stats from your letterboxd export zip file.
 
 # Bugs
 - for now don't work with TV episodes and TV shows don't have runtime.
+- rates are not updated if changed
