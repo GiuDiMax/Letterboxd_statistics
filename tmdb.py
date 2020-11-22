@@ -5,7 +5,7 @@ from web_scraping import *
 import pandas as pd
 from time import sleep
 
-def tmdb_py(tmdb_api):
+def tmdb_py():
     from config import tmdb_api
     tmdb.API_KEY = tmdb_api
     film = pd.read_csv("output/letterboxd_joined.csv")
@@ -30,7 +30,7 @@ def tmdb_py(tmdb_api):
                            'language': 0, 'country': 0, 'type': 0,
                            'rate': 0}]).astype(str)
 
-    final2 = []
+    #final2 = []
     final = final.drop([0])
 
     try:
@@ -67,7 +67,7 @@ def tmdb_py(tmdb_api):
     for index, row in film.iterrows():
         x = x + 1
         check = 0
-        imdb_id = 0
+        #imdb_id = 0
         uri = row['uri']
         rate = row['Rating']
         title2 = row['Name']
@@ -78,6 +78,7 @@ def tmdb_py(tmdb_api):
             s = search.results
             find = []
             for result in s:
+                print(result)
                 title = result['title']
                 id = result['id']
                 release = result['release_date']
