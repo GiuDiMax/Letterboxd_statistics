@@ -2,7 +2,7 @@
 Get stats from your letterboxd export zip file.
 
 # Language
-- This project is now in Italian, I will translate as soon as possible.
+- This project is in Italian in some part, I will translate as soon as possible.
 # Usage
 - Install requirements.txt;
 - Write your TMDB API key in config file;
