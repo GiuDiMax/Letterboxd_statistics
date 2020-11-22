@@ -3,9 +3,10 @@ import sys
 import os
 from web_scraping import *
 import pandas as pd
-from config import tmdb_api
+from time import sleep
 
 def tmdb_py(tmdb_api):
+    from config import tmdb_api
     tmdb.API_KEY = tmdb_api
     film = pd.read_csv("output/letterboxd_joined.csv")
     film.columns = ['Date', 'Name', 'Year', 'uri', 'Rating']
@@ -35,15 +36,15 @@ def tmdb_py(tmdb_api):
     try:
         final_old = pd.read_csv("output/tmdb_scrap_middle_backup.csv")
         numrow = len(final_old)
-        print("Trovato file di backup, ripristino " + str(numrow) + " righe.")
+        print("Find backup file, restore " + str(numrow) + " row.")
         esiste = 1
     except:
         pass
 
     if esiste == 1:
-        si_o_no2 = input('\nVuoi pulire il file escludendo le righe non correttamente identificate?'
-                         '\nDigita si (e poi invio), altrimenti premi solo invio: ')
-        if si_o_no2 == 'si':
+        si_o_no2 = input('\nDo you want to clean up the file excluding the incorrectly identified lines??'
+                         '\nType yes (and then enter), otherwise just hit enter:')
+        if si_o_no2 == 'yes':
             final_old = final_old[final_old.imdb_id != 'tt0000000']
             final_old = final_old[final_old['imdb_id'].notna()]
             # film3 = final_old[final_old['imdb'].astype(str).str.startswith('tt')]
@@ -54,8 +55,8 @@ def tmdb_py(tmdb_api):
         film = pd.merge(film, final_old, on='uri', how='outer', indicator=True)
         film = film.loc[film['_merge'] == 'left_only']
         numrow = len(film)
-        print("\nSono state già trovate " + str(numrow_ori - numrow)
-              + " righe completate, ce ne sono nuove " + str(numrow) + "\n")
+        print("\nAlready find " + str(numrow_ori - numrow)
+              + " complete row, there are new " + str(numrow) + "\n")
 
     film = film.iloc[:, 0:7]
     numrow = len(film)
@@ -131,14 +132,14 @@ def tmdb_py(tmdb_api):
     print("\n")
 
     if errori != "":
-        errori = "\nTitoli non trovati: " + str(errori + ("\n"))
+        errori = "\nNot found titles: " + str(errori + ("\n"))
         print(errori)
 
     if esiste == 1:
         final = pd.concat([final_old, final])
-        print("File unito con successo")
+        print("File merged successfully")
     final.to_csv(r'output/tmdb_scrap.csv', index=False, header=True)
     final.to_csv(r'output/tmdb_scrap.csv.bak', index=False, header=True)
     if os.path.exists("output/tmdb_scrap_middle_backup.csv"):
         os.remove("output/tmdb_scrap_middle_backup.csv")
-    print("File salvato con successo")
+    print("File saved successfully")
