@@ -62,11 +62,12 @@ def list_user(user):
     return(rates)
 
 def affinity(user1, user2):
-    print("\nI build list for user: " + str(user1))
+    print("Start the analysis...")
+    #print("Building list for user: " + str(user1))
     list1 = list_user(user1)
-    print("\nI build list for user: " + str(user2))
+    #print("Building list for user: " + str(user2))
     list2 = list_user(user2)
-    print("\nStart the analysis...")
+    #print("Start the analysis...")
     list = pd.merge(list1, list2, on=['id','name'])
     list['aff'] = 0
     list['meanrate'] = 0.0
@@ -97,13 +98,11 @@ def affinity(user1, user2):
     print("Titles SEEN by both = "+str(num_titoli_comune))
     print("Titles VOTED by both = "+str(len(list)))
     print("Titles LIKED by both = " + str(bonus_count))
-    meanrate = list.sort_values(by=['meanrate','aff'],ascending=False).head(20)
+    meanrate = list.sort_values(by=['meanrate','aff','like_x','like_y'],ascending=False).head(20)
     meanrate = meanrate.reset_index()
     print("\nMOST RATED titles:\n")
     for k in range(10):
         likeprint = ""
-        if meanrate.at[k,'aff'] == 110:
+        if meanrate.at[k,'like_x'] == 1 and meanrate.at[k,'like_x'] == 1:
             likeprint = ' ❤'
         print(str(meanrate.at[k,'name'])+"\t"+str(meanrate.at[k,'meanrate'])+str(likeprint))
-
-affinity('GiuDiMax', 'lu_gonzo')
