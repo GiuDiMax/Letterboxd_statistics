@@ -7,7 +7,7 @@ Get stats from your letterboxd export zip file.
 ## Usage
 - Install requirements.txt;
 - Write your TMDB API key in config file, to obtain it follow this guide: https://developers.themoviedb.org/3/getting-started/introduction;
-- Insert in input folder your zip file downloaded from https://letterboxd.com/settings/data/;
+- Extract file downloaded from https://letterboxd.com/settings/data/ and move them in input folder;
 - Run main.py.
 
 ## Bugs
