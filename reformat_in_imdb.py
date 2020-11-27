@@ -13,7 +13,7 @@ def reformat_imdb():
     film['Your Rating'] = (film['rate'] * 2).astype(int)
 
     film['Date Rated'] = '2019-01-01'
-    film['Title'] = 'Prova'
+    film['Title'] = 'NoTitle'
     film['URL'] = 'https://www.imdb.com/title/tt000000/'
     film['Title Type'] = 'movie'
     film['IMDb Rating'] = '6'
@@ -22,7 +22,7 @@ def reformat_imdb():
     film['Genres'] = 'A,B'
     film['Num Votes'] = '999999'
     film['Release Date'] = '2019-01-01'
-    film['Directors'] = 'Prova'
+    film['Directors'] = 'NoOne'
 
     imdb = film[['Const', 'Your Rating', 'Date Rated', 'Title', 'URL', 'Title Type',
                  'IMDb Rating', 'Runtime (mins)', 'Year', 'Genres', 'Num Votes',

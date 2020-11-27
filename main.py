@@ -1,12 +1,11 @@
 dict_operations = {
     0: "Construction/Updating of the general DB;",
-    1: "Construction/Updating of the cast and crew DB;",
+    1: "Construction/Updating of the cast and crew's DB;",
     2: "Obtain stats,",
     3: "Refactor in IMdB, useful for Movielens;",
-    4: "Exit"
+    4: "Affinity between two users;",
+    5: "Exit"
 }
-
-
 
 def menu():
     filter = 5
@@ -20,9 +19,11 @@ def menu():
         except:
             print("Error")
         if filter == 0:
+            from join_letterboxd_file import join_letterboxd
+            join_letterboxd()
             from tmdb import tmdb_py
-            from expand import expand
             tmdb_py()
+            from expand import expand
             expand()
         if filter == 1:
             from stats import crew_count, cast_count
@@ -34,9 +35,10 @@ def menu():
             dict_stats = {
                 0: "Films viewed by year of release;",
                 1: "Films viewed by year of viewing;",
-                2: "Most fequent people in the database;",
-                3: "Back;",
-                4: "Exit"
+                2: "Most frequent people in the database;",
+                3: "Map;",
+                4: "Back;",
+                5: "Exit"
             }
             print("\nSTATS\nWhat do you want to do?")
             for n2 in dict_stats:
@@ -64,8 +66,16 @@ def menu():
                     print("Error, check that you have built both of DBs")
                     pass
             if filter2 == 3:
-                menu()
+                try:
+                    from stats import movie_map, movie_country
+                    movie_country()
+                    movie_map()
+                except:
+                    print("Error, check that you have built the main DB")
+                    pass
             if filter2 == 4:
+                menu()
+            if filter2 == 5:
                 break
 
         if filter == 3:
@@ -77,6 +87,13 @@ def menu():
                 pass
 
         if filter == 4:
+            from affinity import affinity
+            user1 = input("Enter first username: ")
+            user2 = input("Enter second username: ")
+            affinity(user1, user2)
+            pass
+
+        if filter == 5:
             pass
 
 menu()

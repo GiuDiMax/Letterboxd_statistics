@@ -42,7 +42,7 @@ def serie_information_saving(final,x,tmdb_id,uri,rate,imdb_id, type):
 
         country_string = ""
         for cou in country:
-            cou = cou['name']
+            cou = cou['iso_3166_1']
             country_string = str(country_string) + str(cou) + ";"
         country_string = country_string[:-1]
         final.at[x, 'country'] = country_string
@@ -158,7 +158,7 @@ def movie_information_saving(final,x,id,uri,rate):
 
     country_string = ""
     for cou in country:
-        cou = cou['name']
+        cou = cou['iso_3166_1']
         country_string = str(country_string) + str(cou) + ";"
     country_string = country_string[:-1]
     final.at[x, 'country'] = country_string

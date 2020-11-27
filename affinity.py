@@ -59,22 +59,13 @@ def list_user(user):
     rates["id"] = rates["id"].astype(int)
     rates["rate"] = rates["rate"].astype(int)
     rates["like"] = rates["like"].astype(int)
-    rates.to_csv(r'output/affinity/' + str(user) + '.csv', index=False, header=True)
     return(rates)
 
 def affinity(user1, user2):
-    try:
-        list1 = pd.read_csv("output/affinity/"+user1+".csv")
-        list1.columns = ['id','name','rate','like']
-    except:
-        print("\nI build list for user: " + str(user1))
-        list1 = list_user(user1)
-    try:
-        list2 = pd.read_csv("output/affinity/"+user2+".csv")
-        list2.columns = ['id','name','rate','like']
-    except:
-        print("\nI build list for user: " + str(user2))
-        list2 = list_user(user2)
+    print("\nI build list for user: " + str(user1))
+    list1 = list_user(user1)
+    print("\nI build list for user: " + str(user2))
+    list2 = list_user(user2)
     print("\nStart the analysis...")
     list = pd.merge(list1, list2, on=['id','name'])
     list['aff'] = 0
@@ -115,4 +106,4 @@ def affinity(user1, user2):
             likeprint = ' ❤'
         print(str(meanrate.at[k,'name'])+"\t"+str(meanrate.at[k,'meanrate'])+str(likeprint))
 
-affinity('user1', 'user2')
+affinity('GiuDiMax', 'lu_gonzo')

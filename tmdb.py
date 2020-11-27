@@ -78,7 +78,6 @@ def tmdb_py():
             s = search.results
             find = []
             for result in s:
-                print(result)
                 title = result['title']
                 id = result['id']
                 release = result['release_date']
@@ -102,7 +101,6 @@ def tmdb_py():
                     check, final = movie_information_saving(final, x, tmdb_id, uri, rate)
                 if str(type2) == 'tv':
                     check, final = serie_information_saving(final, x, tmdb_id, uri, rate, imdb_id, type2)
-                # final = season_information_saving(final,x,id,tmdb_id,uri,rate)
                 if str(type2) == 'tv_episode':
                     check, final = episode_information_saving_0(final, x, tmdb_id, uri, rate, imdb_id, type2, title2,
                                                                 year2)
