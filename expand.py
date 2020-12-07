@@ -3,7 +3,7 @@ import pandas as pd
 def expand():
     film = pd.read_csv("output/tmdb_scrap.csv")
     film.columns = ['uri', 'imdb_id', 'tmdb_id', 'title',
-                    'release', 'runtime', 'genre', 'crew',
+                    'release', 'runtime', 'genre','studios', 'crew',
                     'cast', 'language', 'country', 'type', 'rate']
 
     list = {'genre', 'director', 'writer', 'actor', 'language', 'country'}

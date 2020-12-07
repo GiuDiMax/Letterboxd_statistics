@@ -16,6 +16,7 @@ def serie_information_saving(final,x,tmdb_id,uri,rate,imdb_id, type):
         language = response['spoken_languages']
         country = response['production_countries']
         type = response['type']
+        studios = response['production_companies']
 
         final.at[x, 'uri'] = uri
         final.at[x, 'imdb_id'] = imdb_id
@@ -46,6 +47,13 @@ def serie_information_saving(final,x,tmdb_id,uri,rate,imdb_id, type):
             country_string = str(country_string) + str(cou) + ";"
         country_string = country_string[:-1]
         final.at[x, 'country'] = country_string
+
+        studios_string = ""
+        for stu in studios:
+            stu = stu['name']
+            studios_string = str(studios_string) + str(stu) + ";"
+        studios_string = studios_string[:-1]
+        final.at[x, 'studios'] = studios_string
 
         people = serie.credits()
         final = crew_cast(final, people, x)
@@ -130,6 +138,7 @@ def movie_information_saving(final,x,id,uri,rate):
     genre = response['genres']
     language = response['spoken_languages']
     country = response['production_countries']
+    studios = response['production_companies']
     type = 'movie'
 
     final.at[x, 'uri'] = uri
@@ -162,6 +171,13 @@ def movie_information_saving(final,x,id,uri,rate):
         country_string = str(country_string) + str(cou) + ";"
     country_string = country_string[:-1]
     final.at[x, 'country'] = country_string
+
+    studios_string = ""
+    for stu in studios:
+        stu = stu['name']
+        studios_string = str(studios_string) + str(stu) + ";"
+    studios_string = studios_string[:-1]
+    final.at[x, 'studios'] = studios_string
 
     people = movie.credits()
 
@@ -204,9 +220,16 @@ def crew_cast (final,people,x):
     crew_string = ""
     for person in crew:
         person_id = person['id']
-        role = person['department']
+        role = person['job']
         #name = person['name']
-        crew_string = str(crew_string) + str(person_id) + ":" + str(role) + ";"
+        if role in ['Director','Producer','Writer','Editor',
+                    'Cinematography','Sound','Production Designer',
+                    'Art Direction','Set Decoration','Visual Effects',
+                    'Original Music Composer','Sound','Costume Design',
+                    'Makeup Department Head']:
+            crew_string = str(crew_string) + str(person_id) + ":" + str(role) + ";"
+        else:
+            pass
     crew_string = crew_string[:-1]
     final.at[x, 'crew'] = crew_string
     return final

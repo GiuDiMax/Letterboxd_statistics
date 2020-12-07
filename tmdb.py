@@ -26,9 +26,9 @@ def tmdb_py():
 
     final = pd.DataFrame([{'uri': 0, 'imdb_id': 0, 'tmdb_id': 0,
                            'title': 0, 'release': 0, 'runtime': 0,
-                           'genre': 0, 'crew': 0, 'cast': 0,
-                           'language': 0, 'country': 0, 'type': 0,
-                           'rate': 0}]).astype(str)
+                           'genre': 0, 'studios':0, 'crew': 0,
+                           'cast': 0, 'language': 0, 'country': 0,
+                           'type': 0, 'rate': 0}]).astype(str)
 
     #final2 = []
     final = final.drop([0])

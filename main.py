@@ -1,8 +1,8 @@
 dict_operations = {
     0: "Construction/Updating of the general DB;",
-    1: "Construction/Updating of the cast and crew's DB;",
-    2: "Obtain stats,",
-    3: "Refactor in IMdB, useful for Movielens;",
+    1: "Counter of cast and crew (mandatory for stats);",
+    2: "Obtain stats;",
+    3: "Refactor in IMDb, useful for Movielens;",
     4: "Affinity between two users;",
     5: "Exit"
 }
@@ -12,7 +12,7 @@ def menu():
     while int(filter) != 4:
         print("\nWhat do you want to do?")
         for n in dict_operations:
-            print(str(n) + " for " + str(dict_operations[n]))
+            print(str(n) + " - " + str(dict_operations[n]))
         filter = input()
         try:
             filter = int(filter)
@@ -27,9 +27,9 @@ def menu():
             expand()
         if filter == 1:
             from stats import crew_count, cast_count
-            print("CREW building")
+            print("\nCREW building")
             crew_count()
-            print("CAST building")
+            print("\nCAST building")
             cast_count()
         if filter == 2:
             dict_stats = {
@@ -42,7 +42,7 @@ def menu():
             }
             print("\nSTATS\nWhat do you want to do?")
             for n2 in dict_stats:
-                print(str(n2) + " for " + str(dict_stats[n2]))
+                print(str(n2) + " - " + str(dict_stats[n2]))
             filter2 = int(input())
             if filter2 == 0:
                 try:
@@ -94,6 +94,7 @@ def menu():
             pass
 
         if filter == 5:
+            break
             pass
 
 menu()

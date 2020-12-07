@@ -127,23 +127,25 @@ def movie_map():
 def filtering_op():
     dict_crew = {
         0: "Actors",
-        1: "Directing",
-        2: "Costume & Make-Up",
-        3: "Production",
-        4: "Camera",
-        5: "Sound",
-        6: "Art",
-        7: "Visual Effects",
-        8: "Editing",
-        9: "Lighting",
-        10: "Writing",
-        11: "Crew"
+        1: "Director",
+        2: "Producer",
+        3: "Writer",
+        4: "Editor",
+        5: "Cinematography",
+        6: "Sound",
+        7: "Production Designer",
+        8: "Art Direction",
+        9: "Set Decoration",
+        10: "Visual Effects",
+        11: "Original Music Composer",
+        12: "Costume Design",
+        13: "Makeup Department Head"
     }
 
     print("\nPer cosa vuoi filtrare?")
 
     for n in dict_crew:
-        print(str(n) + " for " + str(dict_crew[n]))
+        print(str(n) + " - " + str(dict_crew[n]))
     filter = input()
     if int(filter) == 0:
         cast = pd.read_csv("output/cast_count.csv")
