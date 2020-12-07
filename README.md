@@ -16,7 +16,6 @@ Get stats from your letterboxd export zip file.
 - Ratings are not updated if they change.
 
 ## Future developments
-- Reduce the number of people in "Crew", to optimize time and statistics;
 - Most liked Cast/Crew by avg ratings;
 - Filtering per year;
 - Map of nations.
