@@ -12,5 +12,4 @@ Get stats from your letterboxd export zip file.
 - Ratings are not updated if they change.
 
 ## Future developments
-- Most liked Cast/Crew by avg ratings;
 - Filtering per year.
