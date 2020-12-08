@@ -11,7 +11,8 @@ def serie_information_saving(final,x,tmdb_id,uri,rate,imdb_id, type):
         tmdb_id = response['id']
         title = response['name']
         release = response['first_air_date']
-        # runtime = response['runtime']
+        from web_scraping import obtain_runtime
+        runtime = obtain_runtime(uri)
         genre = response['genres']
         language = response['spoken_languages']
         country = response['production_countries']
@@ -23,7 +24,7 @@ def serie_information_saving(final,x,tmdb_id,uri,rate,imdb_id, type):
         final.at[x, 'tmdb_id'] = tmdb_id
         final.at[x, 'title'] = title
         final.at[x, 'release'] = release
-        #final.at[x, 'runtime'] = runtime
+        final.at[x, 'runtime'] = runtime
         final.at[x, 'type'] = type
         final.at[x, 'rate'] = rate
 
@@ -223,7 +224,7 @@ def crew_cast (final,people,x):
         role = person['job']
         #name = person['name']
         if role in ['Director','Producer','Writer','Editor',
-                    'Cinematography','Sound','Production Designer',
+                    'Director of Photography','Sound','Production Designer',
                     'Art Direction','Set Decoration','Visual Effects',
                     'Original Music Composer','Sound','Costume Design',
                     'Makeup Department Head']:

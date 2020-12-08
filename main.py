@@ -1,10 +1,9 @@
 dict_operations = {
     0: "Construction/Updating of the general DB;",
-    1: "Counter of cast and crew (mandatory for stats);",
-    2: "Obtain stats;",
-    3: "Refactor in IMDb, useful for Movielens;",
-    4: "Affinity between two users;",
-    5: "Exit"
+    1: "Obtain stats;",
+    2: "Refactor in IMDb (useful for Movielens);",
+    3: "Affinity between two users;",
+    4: "Exit"
 }
 
 def menu():
@@ -26,12 +25,6 @@ def menu():
             from expand import expand
             expand()
         if filter == 1:
-            from stats import crew_count, cast_count
-            print("\nCREW building")
-            crew_count()
-            print("\nCAST building")
-            cast_count()
-        if filter == 2:
             dict_stats = {
                 0: "Films viewed by year of release;",
                 1: "Films viewed by year of viewing;",
@@ -49,29 +42,34 @@ def menu():
                     from stats import watched_by_release_year
                     watched_by_release_year()
                 except:
-                    print("Error, check that you have built the main DB")
+                    print("\nError, check that you have built the main DB")
                     pass
             if filter2 == 1:
                 try:
                     from stats import watched_by_year
                     watched_by_year()
                 except:
-                    print("Error, check that you have built the main DB")
+                    print("\nError, check that you have built the main DB")
                     pass
             if filter2 == 2:
                 try:
-                    from stats import filtering_op
-                    filtering_op()
+                    from stats import filtering_op,crew_count,cast_count
+                    print("\nCrew Count...")
+                    crew = crew_count()
+                    print("\nCast Count...")
+                    cast = cast_count()
+                    print("\n")
+                    filtering_op(cast, crew)
                 except:
-                    print("Error, check that you have built both of DBs")
+                    print("\nError, check that you have built the main DB")
                     pass
             if filter2 == 3:
                 try:
                     from stats import movie_map, movie_country
-                    movie_country()
-                    movie_map()
+                    db = movie_country()
+                    movie_map(db)
                 except:
-                    print("Error, check that you have built the main DB")
+                    print("\nError, check that you have built the main DB")
                     pass
             if filter2 == 4:
                 menu()
@@ -83,7 +81,7 @@ def menu():
                 from reformat_in_imdb import reformat_imdb
                 reformat_imdb()
             except:
-                print("Error, check that you have built the main DB")
+                print("\nError, check that you have built the main DB")
                 pass
 
         if filter == 4:

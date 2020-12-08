@@ -57,3 +57,14 @@ def imdb_to_tmdb_id (imdb):
             id = id[0]['id']
             break
     return[id, type]
+
+def obtain_runtime(url):
+    page = urlopen(url)
+    html_bytes = page.read()
+    html = html_bytes.decode("utf-8")
+    start_index = html.find('mins')
+    runtime = html[start_index - 15 :start_index]
+    runtime = runtime.replace("	","")
+    runtime = runtime.replace(",", "")
+    runtime = (str.split(runtime,"&"))[0]
+    return(int(runtime))

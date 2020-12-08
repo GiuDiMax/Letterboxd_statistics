@@ -47,7 +47,9 @@ def crew_count():
         sleep(0.25)
 
     crew = crew_new.sort_values(by=['sum'], ascending=False)
-    crew.to_csv(r'output/crew_count.csv', index=False, header=True)
+    #crew.to_csv(r'output/crew_count.csv', index=False, header=True)
+    return crew
+
 
 
 #MOST FREQUENT CAST CSV
@@ -72,7 +74,9 @@ def cast_count():
         sleep(0.25)
 
     cast = cast_new.sort_values(by=['sum'], ascending=False)
-    cast.to_csv(r'output/cast_count.csv', index=False, header=True)
+    #cast.to_csv(r'output/cast_count.csv', index=False, header=True)
+    return cast
+
 
 #MOVIE MAP
 def movie_country():
@@ -96,17 +100,17 @@ def movie_country():
         sleep(0.25)
 
     country = country_new.sort_values(by=['sum'], ascending=False)
-    country.to_csv(r'output/country_count.csv', index=False, header=True)
+    #country.to_csv(r'output/country_count.csv', index=False, header=True)
     return country
 
-def movie_map():
+def movie_map(db):
     import plotly.express as px
     import pycountry
     list_alpha_2 = [i.alpha_2 for i in list(pycountry.countries)]
     list_alpha_3 = [i.alpha_3 for i in list(pycountry.countries)]
     list_alpha = [i.name for i in list(pycountry.countries)]
     list1 = pd.DataFrame({'a2':list_alpha_2,'a3':list_alpha_3,'name':list_alpha})
-    db = pd.read_csv("output/country_count.csv", low_memory=False)
+    #db = pd.read_csv("output/country_count.csv", low_memory=False)
     db['a3'] = ""
     db['name'] = ""
     db = db.set_index('country')
@@ -124,14 +128,14 @@ def movie_map():
     fig.show()
 
 #FILTRAGGIO
-def filtering_op():
+def filtering_op(cast,crew):
     dict_crew = {
         0: "Actors",
         1: "Director",
         2: "Producer",
         3: "Writer",
         4: "Editor",
-        5: "Cinematography",
+        5: "Director of Photography",
         6: "Sound",
         7: "Production Designer",
         8: "Art Direction",
@@ -142,31 +146,44 @@ def filtering_op():
         13: "Makeup Department Head"
     }
 
-    print("\nPer cosa vuoi filtrare?")
+    #print("\nPer cosa vuoi filtrare?")
+    #for n in dict_crew:
+    #    print(str(n) + " - " + str(dict_crew[n]))
 
-    for n in dict_crew:
-        print(str(n) + " - " + str(dict_crew[n]))
-    filter = input()
-    if int(filter) == 0:
-        cast = pd.read_csv("output/cast_count.csv")
-        cast = pd.DataFrame(cast)
-        cast.columns = ['id','sum']
-        filtering = cast.head(10).reset_index()
 
-    else:
-        filter = dict_crew[int(filter)]
-        crew = pd.read_csv("output/crew_count.csv")
-        crew2 = crew['crew'].str.split(":", expand=True)
-        crew2.columns = ['id', 'role']
-        crew = crew['sum']
-        crew = pd.concat([crew2, crew], axis=1)
-        filtering = crew[crew['role'] == filter]
-        filtering = filtering.head(10).reset_index()
 
-    n = 0
-    for id in filtering['id']:
-        id = int(id)
-        id = str(id)
-        name, pic = person_op(id)
-        print(str(n + 1) + "\t" + str(name) + "\t" + str(filtering.at[n, 'sum']))
-        n = n + 1
+    for num in dict_crew:
+        filter = num
+        print("\nTop 10 " + dict_crew[int(filter)] + ":")
+
+        if int(filter) == 0:
+            #cast = pd.read_csv("output/cast_count.csv")
+            #cast = pd.DataFrame(cast)
+            cast.columns = ['id', 'sum']
+            filtering = cast.head(10).reset_index()
+
+        if int(filter) == 1:
+            filter = dict_crew[int(filter)]
+            # crew = pd.read_csv("output/crew_count.csv")
+            crew2 = crew['crew'].str.split(":", expand=True)
+            crew2.columns = ['id', 'role']
+            crew = crew['sum']
+            crew = pd.concat([crew2, crew], axis=1)
+            filtering = crew[crew['role'] == filter]
+            filtering = filtering.head(10).reset_index()
+
+        else:
+            try:
+                filter = dict_crew[int(filter)]
+                filtering = crew[crew['role'] == filter]
+                filtering = filtering.head(10).reset_index()
+            except:
+                pass
+
+        n = 0
+        for id in filtering['id']:
+            id = int(id)
+            id = str(id)
+            name, pic = person_op(id)
+            print(str(n + 1) + "\t" + str(name) + "\t" + str(filtering.at[n, 'sum']))
+            n = n + 1

@@ -29,5 +29,5 @@ def join_letterboxd():
 
     final = film.merge(rate, on='Letterboxd URI', how='left')
 
-    print("Join Complete!")
+    print("Join Complete!\n")
     final.to_csv(r'output/letterboxd_joined.csv', index=False, header=True)
