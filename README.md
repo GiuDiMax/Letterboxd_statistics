@@ -1,9 +1,6 @@
 # Letterboxd statistics
 Get stats from your letterboxd export zip file.
 
-## Language
-- This project is in Italian in some part, sorry.
-
 ## Usage
 - Install requirements.txt;
 - Write your TMDB API key in config file, to obtain it follow this guide: https://developers.themoviedb.org/3/getting-started/introduction;
