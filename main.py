@@ -29,9 +29,10 @@ def menu():
                 0: "Films viewed by year of release;",
                 1: "Films viewed by year of viewing;",
                 2: "Most frequent people in the database;",
-                3: "Map;",
-                4: "Back;",
-                5: "Exit"
+                3: "Most liked people in the database;",
+                4: "Map;",
+                5: "Back;",
+                6: "Exit"
             }
             print("\nSTATS\nWhat do you want to do?")
             for n2 in dict_stats:
@@ -65,15 +66,27 @@ def menu():
                     pass
             if filter2 == 3:
                 try:
+                    from stats import filtering_op_avg,cast_rate,crew_rate
+                    print("\nCrew Count...")
+                    crew = crew_rate()
+                    print("\nCast Count...")
+                    cast = cast_rate()
+                    print("\n")
+                    filtering_op_avg(cast, crew)
+                except:
+                    print("\nError, check that you have built the main DB")
+                    pass
+            if filter2 == 4:
+                try:
                     from stats import movie_map, movie_country
                     db = movie_country()
                     movie_map(db)
                 except:
                     print("\nError, check that you have built the main DB")
                     pass
-            if filter2 == 4:
-                menu()
             if filter2 == 5:
+                menu()
+            if filter2 == 6:
                 break
 
         if filter == 3:

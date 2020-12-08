@@ -24,7 +24,6 @@ def watched_by_year():
     plt.hist(diary, bins=range + 1, rwidth=0.8)
     plt.show()
 
-
 #MOST FREQUENT CREW CSV
 def crew_count():
     db = pd.read_csv("output/database.csv", low_memory=False)
@@ -48,9 +47,8 @@ def crew_count():
 
     crew = crew_new.sort_values(by=['sum'], ascending=False)
     #crew.to_csv(r'output/crew_count.csv', index=False, header=True)
+    print(crew)
     return crew
-
-
 
 #MOST FREQUENT CAST CSV
 def cast_count():
@@ -77,6 +75,71 @@ def cast_count():
     #cast.to_csv(r'output/cast_count.csv', index=False, header=True)
     return cast
 
+#MOST RATED CAST
+def cast_rate():
+    db = pd.read_csv("output/database.csv", low_memory=False)
+    db = pd.DataFrame(db)
+    filter_col = [col for col in db if col.startswith('cast')]
+    x = 0
+    for col1 in filter_col:
+        cast = pd.pivot_table(db, columns=col1, values='rate', aggfunc='mean')
+        cast2 = pd.pivot_table(db, columns=col1, aggfunc='size',
+                                   fill_value=0).reset_index(name='sum').dropna()
+        cast = cast.T.reset_index()
+        cast.columns = ['cast', 'avg']
+        cast2.columns = ['cast', 'sum']
+        cast = cast.merge(cast2, on='cast')
+        if col1 == 'cast1':
+            cast_new = cast
+        else:
+            cast_new = pd.concat([cast_new, cast]).\
+                groupby(['cast']).agg(sum=('sum','sum'),
+                                      avg=('avg','mean')).reset_index()
+
+        j = (x + 1) / len(filter_col)
+        x = x + 1
+        sys.stdout.write('\r')
+        sys.stdout.write("[%-60s] %d%%" % ('=' * int(60 * j), 100 * j))
+        sys.stdout.flush()
+        sleep(0.25)
+
+    cast_new = cast_new[cast_new['sum']>3]
+    cast = cast_new.sort_values(by=['avg'], ascending=False)
+    #cast.to_csv(r'output/cast_count.csv', index=False, header=True)
+    return cast
+
+
+def crew_rate():
+    db = pd.read_csv("output/database.csv", low_memory=False)
+    db = pd.DataFrame(db)
+    filter_col = [col for col in db if col.startswith('crew')]
+    x = 0
+    for col1 in filter_col:
+        crew = pd.pivot_table(db, columns=col1, values='rate', aggfunc='mean')
+        crew2 = pd.pivot_table(db, columns=col1, aggfunc='size',
+                               fill_value=0).reset_index(name='sum').dropna()
+        crew = crew.T.reset_index()
+        crew.columns = ['crew', 'avg']
+        crew2.columns = ['crew', 'sum']
+        crew = crew.merge(crew2, on='crew')
+        if col1 == 'crew1':
+            crew_new = crew
+        else:
+            crew_new = pd.concat([crew_new, crew]).\
+                groupby(['crew']).agg(sum=('sum','sum'),
+                                      avg=('avg','mean')).reset_index()
+
+        j = (x + 1) / len(filter_col)
+        x = x + 1
+        sys.stdout.write('\r')
+        sys.stdout.write("[%-60s] %d%%" % ('=' * int(60 * j), 100 * j))
+        sys.stdout.flush()
+        sleep(0.25)
+
+    crew_new = crew_new[crew_new['sum']>1]
+    crew = crew_new.sort_values(by=['avg'], ascending=False)
+    #crew.to_csv(r'output/crew_count.csv', index=False, header=True)
+    return crew
 
 #MOVIE MAP
 def movie_country():
@@ -150,8 +213,6 @@ def filtering_op(cast,crew):
     #for n in dict_crew:
     #    print(str(n) + " - " + str(dict_crew[n]))
 
-
-
     for num in dict_crew:
         filter = num
         print("\nTop 10 " + dict_crew[int(filter)] + ":")
@@ -186,4 +247,56 @@ def filtering_op(cast,crew):
             id = str(id)
             name, pic = person_op(id)
             print(str(n + 1) + "\t" + str(name) + "\t" + str(filtering.at[n, 'sum']))
+            n = n + 1
+
+def filtering_op_avg(cast,crew):
+    dict_crew = {
+        0: "Actors",
+        1: "Director",
+        2: "Producer",
+        3: "Writer",
+        4: "Editor",
+        5: "Director of Photography",
+        6: "Sound",
+        7: "Production Designer",
+        8: "Art Direction",
+        9: "Set Decoration",
+        10: "Visual Effects",
+        11: "Original Music Composer",
+        12: "Costume Design",
+        13: "Makeup Department Head"
+    }
+
+    for num in dict_crew:
+        filter = num
+        print("\nTop 10 " + dict_crew[int(filter)] + ":")
+
+        if int(filter) == 0:
+            cast.columns = ['id', 'sum', 'avg']
+            filtering = cast.head(10).reset_index()
+
+        if int(filter) == 1:
+            filter = dict_crew[int(filter)]
+            crew2 = crew['crew'].str.split(":", expand=True)
+            crew2.columns = ['id', 'role']
+            crew = crew.drop(columns='crew')
+            crew = pd.concat([crew2, crew], axis=1)
+            filtering = crew[crew['role'] == filter]
+            filtering = filtering.head(10).reset_index()
+
+        else:
+            try:
+                filter = dict_crew[int(filter)]
+                filtering = crew[crew['role'] == filter]
+                filtering = filtering.head(10).reset_index()
+            except:
+                pass
+
+        n = 0
+        for id in filtering['id']:
+            id = int(id)
+            id = str(id)
+            name, pic = person_op(id)
+            print(str(n + 1) + "\t" + str(name) + "\t" + str(round(filtering.at[n, 'avg'],2))
+                  + "★"+ "\t" + str(filtering.at[n, 'sum'])+" movies")
             n = n + 1
