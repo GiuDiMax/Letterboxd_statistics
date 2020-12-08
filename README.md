@@ -12,7 +12,6 @@ Get stats from your letterboxd export zip file.
 
 ## Bugs
 - TV episodes are not scraped;
-- TV shows don't have runtime;
 - Ratings are not updated if they change.
 
 ## Future developments
