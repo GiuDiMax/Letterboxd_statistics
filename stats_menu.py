@@ -41,7 +41,7 @@ def stats_menu(db, watched, diary):
             print("\nCast Count...")
             cast = cast_count(db)
             print("\n")
-            filtering_op(cast, crew)
+            filtering_op(cast, crew, 10)
         except:
             print("\nError, check that you have built the main DB")
             pass
@@ -71,27 +71,33 @@ def stats_menu(db, watched, diary):
         from main import menu
         menu()
 
-def stats_menu2(db, watched):
+def stats_menu2(db, watched, diary):
 
     dict_stats = {
-        0: "Films viewed by year of release;",
-        1: "Most frequent people in the database;",
-        2: "Most liked people in the database;",
-        3: "Map;",
-        4: "Back.",
+        0: "General stats",
+        1: "Films viewed by year of release;",
+        2: "Most frequent people in the database;",
+        3: "Most liked people in the database;",
+        4: "Map;",
+        5: "Back.",
     }
     print("\nSTATS\nWhat do you want to do?")
     for n2 in dict_stats:
         print(str(n2) + " - " + str(dict_stats[n2]))
     filter2 = int(input())
+
     if filter2 == 0:
+        from stats import general
+        general(db,diary)
+
+    if filter2 == 1:
         try:
             from stats import watched_by_release_year
             watched_by_release_year(watched)
         except:
             print("\nError, check that you have built the main DB")
             pass
-    if filter2 == 1:
+    if filter2 == 2:
         try:
             from stats import filtering_op, crew_count, cast_count
 
@@ -104,7 +110,7 @@ def stats_menu2(db, watched):
         except:
             print("\nError, check that you have built the main DB")
             pass
-    if filter2 == 2:
+    if filter2 == 3:
         try:
             from stats import filtering_op_avg, cast_rate, crew_rate
 
@@ -113,11 +119,11 @@ def stats_menu2(db, watched):
             print("\nCast Count...")
             cast = cast_rate(db)
             print("\n")
-            filtering_op_avg(cast, crew)
+            filtering_op_avg(cast, crew, 5)
         except:
             print("\nError, check that you have built the main DB")
             pass
-    if filter2 == 3:
+    if filter2 == 4:
         try:
             from stats import movie_map, movie_country
 
@@ -126,6 +132,6 @@ def stats_menu2(db, watched):
         except:
             print("\nError, check that you have built the main DB")
             pass
-    if filter2 == 4:
+    if filter2 == 5:
         from main import menu
         menu()

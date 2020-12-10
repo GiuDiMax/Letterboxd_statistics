@@ -2,7 +2,7 @@ import tmdbsimple as tmdb
 from config import tmdb_api
 tmdb.API_KEY = tmdb_api
 
-def serie_information_saving(final,x,tmdb_id,uri,rate,imdb_id, type):
+def serie_information_saving(final,x,tmdb_id,uri,rate,imdb_id, type, watched, rewatch):
     try:
         serie = tmdb.TV(tmdb_id)
         response = serie.info()
@@ -27,6 +27,8 @@ def serie_information_saving(final,x,tmdb_id,uri,rate,imdb_id, type):
         final.at[x, 'runtime'] = runtime
         final.at[x, 'type'] = type
         final.at[x, 'rate'] = rate
+        final.at[x, 'watched'] = watched
+        final.at[x, 'rewatch'] = rewatch
 
         lang_string = ""
         for lang in language:
@@ -67,66 +69,7 @@ def serie_information_saving(final,x,tmdb_id,uri,rate,imdb_id, type):
 
     return[check,final]
 
-def episode_information_saving(final,x,tmdb_id,uri,rate,imdb_id,type):
-    try:
-        episode = tmdb.TV_Episodes(tmdb_id)
-        response = episode.info()
-
-        #imdb_id = response['imdb_id']
-        tmdb_id = response['id']
-        title = response['name']
-        release = response['air_date']
-        # runtime = response['runtime']
-        #genre = response['genres']
-        #language = response['languages']
-        #country = response['origin_country']
-        #type = response['type']
-
-        final.at[x, 'uri'] = uri
-        final.at[x, 'imdb_id'] = imdb_id
-        final.at[x, 'tmdb_id'] = tmdb_id
-        final.at[x, 'title'] = title
-        final.at[x, 'release'] = release
-        #final.at[x, 'runtime'] = runtime
-        #final.at[x, 'genre'] = genre
-        final.at[x, 'type'] = type
-        final.at[x, 'rate'] = rate
-
-        '''
-        lang_string = ""
-        for lang in language:
-            lang = lang['name']
-            lang_string = str(lang_string) + str(lang) + ";"
-        lang_string = lang_string[:-1]
-        final.at[x, 'language'] = lang_string
-
-        genre_string = ""
-        for gen in genre:
-            gen = gen['name']
-            genre_string = str(genre_string) + str(gen) + ";"
-        genre_string = genre_string[:-1]
-        final.at[x, 'genre'] = genre_string
-        
-        country_string = ""
-        for cou in country:
-            cou = cou['name']
-            country_string = str(country_string) + str(cou) + ";"
-        country_string = country_string[:-1]
-        final.at[x, 'coutry'] = country_string
-        '''
-
-        people = episode.credits()
-        final = crew_cast(final, people, x)
-
-        check = 'ok'
-
-    except:
-        check = 0
-        pass
-
-    return[check,final]
-
-def movie_information_saving(final,x,id,uri,rate):
+def movie_information_saving(final,x,id,uri,rate, watched, rewatch):
     check = 0
     movie = tmdb.Movies(id)
     response = movie.info()
@@ -151,6 +94,8 @@ def movie_information_saving(final,x,id,uri,rate):
     final.at[x, 'genre'] = genre
     final.at[x, 'type'] = type
     final.at[x, 'rate'] = rate
+    final.at[x,'watched'] = watched
+    final.at[x,'rewatch'] = rewatch
 
     lang_string = ""
     for lang in language:
@@ -187,7 +132,7 @@ def movie_information_saving(final,x,id,uri,rate):
     check = 'ok'
     return [check,final]
 
-def episode_information_saving_0(final, x, tmdb_id, uri, rate, imdb_id, type, title, year):
+def episode_information_saving_0(final, x, tmdb_id, uri, rate, imdb_id, type, title, year, watched, rewatch):
     try:
 
         final.at[x, 'uri'] = uri
@@ -195,10 +140,14 @@ def episode_information_saving_0(final, x, tmdb_id, uri, rate, imdb_id, type, ti
         final.at[x, 'tmdb_id'] = tmdb_id
         final.at[x, 'title'] = title
         final.at[x, 'release'] = year
-        # final.at[x, 'runtime'] = runtime
         # final.at[x, 'genre'] = genre
+        from web_scraping import obtain_runtime
+        runtime = obtain_runtime(uri)
+        final.at[x, 'runtime'] = runtime
         final.at[x, 'type'] = type
         final.at[x, 'rate'] = rate
+        final.at[x, 'watched'] = watched
+        final.at[x, 'rewatch'] = rewatch
         check = 'ok'
 
     except:
@@ -224,10 +173,14 @@ def crew_cast (final,people,x):
         role = person['job']
         #name = person['name']
         if role in ['Director','Producer','Writer','Editor',
-                    'Director of Photography','Sound','Production Designer',
+                    'Director of Photography'
+                    '''
+                    'Sound','Production Designer',
                     'Art Direction','Set Decoration','Visual Effects',
                     'Original Music Composer','Sound','Costume Design',
-                    'Makeup Department Head']:
+                    'Makeup Department Head'
+                    '''
+                    ]:
             crew_string = str(crew_string) + str(person_id) + ":" + str(role) + ";"
         else:
             pass

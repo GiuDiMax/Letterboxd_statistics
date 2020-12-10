@@ -9,7 +9,7 @@ def tmdb_py():
     from config import tmdb_api
     tmdb.API_KEY = tmdb_api
     film = pd.read_csv("output/letterboxd_joined.csv")
-    film.columns = ['Date', 'Name', 'Year', 'uri', 'Rating']
+    film.columns = ['Date', 'Name', 'Year', 'uri', 'Rating','watched','rewatch']
     esiste = 0
 
     try:
@@ -28,7 +28,7 @@ def tmdb_py():
                            'title': 0, 'release': 0, 'runtime': 0,
                            'genre': 0, 'studios':0, 'crew': 0,
                            'cast': 0, 'language': 0, 'country': 0,
-                           'type': 0, 'rate': 0}]).astype(str)
+                           'type': 0, 'rate': 0,'watched': 0,'rewatch': 0}]).astype(str)
 
     #final2 = []
     final = final.drop([0])
@@ -70,6 +70,8 @@ def tmdb_py():
         #imdb_id = 0
         uri = row['uri']
         rate = row['Rating']
+        watched = row['watched']
+        rewatch = row['rewatch']
         title2 = row['Name']
         year2 = row['Year']
         search = tmdb.Search()
@@ -87,7 +89,7 @@ def tmdb_py():
 
             if len(find) == 1:
                 id = find[0]
-                check, final = movie_information_saving(final, x, id, uri, rate)
+                check, final = movie_information_saving(final, x, id, uri, rate, watched, rewatch)
 
         except:
             check = 0
@@ -98,13 +100,13 @@ def tmdb_py():
                 imdb_id = imdb_id_scraping(uri)
                 tmdb_id, type2 = imdb_to_tmdb_id(imdb_id)
                 if str(type2) == 'movie':
-                    check, final = movie_information_saving(final, x, tmdb_id, uri, rate)
+                    check, final = movie_information_saving(final, x, tmdb_id, uri, rate, watched, rewatch)
                 if str(type2) == 'tv':
-                    check, final = serie_information_saving(final, x, tmdb_id, uri, rate, imdb_id, type2)
+                    check, final = serie_information_saving(final, x, tmdb_id, uri, rate, imdb_id,
+                                                            type2, watched, rewatch)
                 if str(type2) == 'tv_episode':
                     check, final = episode_information_saving_0(final, x, tmdb_id, uri, rate, imdb_id, type2, title2,
-                                                                year2)
-                    # check, final = episode_information_saving(final, x, tmdb_id, uri, rate,imdb_id, type2)
+                                                                year2, watched, rewatch)
             except:
                 pass
 
@@ -113,7 +115,8 @@ def tmdb_py():
             errori = (str(errori) + "\n- " + str(title2))
             type2 = 'not found'
             imdb_id = 'tt0000000'
-            check, final = episode_information_saving_0(final, x, tmdb_id, uri, rate, imdb_id, type2, title2, year2)
+            check, final = episode_information_saving_0(final, x, tmdb_id, uri, rate, imdb_id,
+                                                        type2, title2, year2, watched, rewatch)
 
         if (x + 1) % 10 == 0:
             if esiste == 1:

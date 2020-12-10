@@ -4,12 +4,11 @@ def expand():
     film = pd.read_csv("output/tmdb_scrap.csv")
     film.columns = ['uri', 'imdb_id', 'tmdb_id', 'title',
                     'release', 'runtime', 'genre','studios', 'crew',
-                    'cast', 'language', 'country', 'type', 'rate']
+                    'cast', 'language', 'country', 'type', 'rate','watched','rewatch']
 
-    list = {'genre', 'director', 'writer', 'actor', 'language', 'country'}
 
-    film = film[film.imdb_id != 'tt0000000']
-    film = film[film['imdb_id'].notna()]
+    #film = film[film.imdb_id != 'tt0000000']
+    #film = film[film['imdb_id'].notna()]
 
     date = pd.read_csv("input/diary.csv")
     date.columns = ['Date', 'Name', 'Year', 'Letterboxd URI',
@@ -45,9 +44,14 @@ def expand():
         string = 'country' + str(x + 1)
         country_list = country_list.rename(columns={x: string})
 
-    final = pd.concat([film, genre_list, language_list, country_list, cast_list, crew_list], axis=1)
+    studios_list = film.studios.str.split(";", expand=True)
+    for x in range(len(studios_list.columns)):
+        string = 'studios' + str(x + 1)
+        studios_list = studios_list.rename(columns={x: string})
+
+    final = pd.concat([film, genre_list, language_list, country_list, cast_list, crew_list,studios_list], axis=1)
     final["uri"] = final["uri"].str.replace("https://boxd.it/", "")
-    final = final.drop(columns=['genre', 'cast', 'crew', 'language', 'country'])
+    final = final.drop(columns=['genre', 'cast', 'crew', 'language', 'country','studios'])
     # final = final.loc[final['uri'] != "0"]
 
     #print("File espanso e salvato col nome di database.csv")

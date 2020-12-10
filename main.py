@@ -60,12 +60,12 @@ def menu():
             db2 = pd.merge(diary,watched,on=['Name','Year'])
             watched = db2[['Date_x', 'Name', 'Year', 'Letterboxd URI_y']]
             watched.columns=['Date', 'Name', 'Year', 'Letterboxd URI']
-            db2 = db2['Letterboxd URI_y'].str.replace('https://boxd.it/','')
 
             db = pd.read_csv("output/database.csv", low_memory=False)
             db = pd.DataFrame(db)
-            db = db[db['uri'].isin(db2)].reset_index()
-            stats_menu2(db, watched)
+            db = db[db['watched'].notna()]
+            db = db[db['watched'].str.startswith(year_filter)]
+            stats_menu2(db, watched, diary)
 
         if filter == 3:
             try:

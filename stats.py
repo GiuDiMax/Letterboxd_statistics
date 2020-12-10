@@ -10,7 +10,8 @@ dict_crew = {
     2: "Producer",
     3: "Writer",
     4: "Editor",
-    5: "Director of Photography",
+    5: "Director of Photography"
+    '''
     6: "Sound",
     7: "Production Designer",
     8: "Art Direction",
@@ -19,11 +20,25 @@ dict_crew = {
     11: "Original Music Composer",
     12: "Costume Design",
     13: "Makeup Department Head"
+    '''
 }
 
 #GENERAL STATS
 def general(db,diary):
-    print("COMING SOON")
+    sum = db['runtime'].sum()
+    sum = (sum/60)
+    print("\nTOTAL RUNTIME: "+str(round(sum,3)) +" hours")
+    print("TOTAL MOVIES WATCHED (included rewatch): " + str(len(db)))
+    types = ['language','country','genre','studios']
+    for type in types:
+        gen = general_count(db,type)
+        print("\nTotal number of "+str(type) +": "+ str(len(gen)))
+        print("Top 5 "+str(type))
+        for i in range(5):
+            number = i+1
+            out1 = gen.iloc[i][0]
+            out2 = gen.iloc[i][1]
+            print(str(number) +" " + str(out1)+ ": " +str(out2))
 
 #WATCHED MOVIES BY RELEASE YEAR
 def watched_by_release_year(watched):
@@ -84,6 +99,22 @@ def cast_count(db):
     cast = cast_new.sort_values(by=['sum'], ascending=False)
     #cast.to_csv(r'output/cast_count.csv', index=False, header=True)
     return cast
+
+def general_count(db,type):
+    type = str(type)
+    filter_col = [col for col in db if col.startswith(type)]
+    x = 0
+    for col1 in filter_col:
+        general = pd.pivot_table(db, columns=col1, aggfunc='size', fill_value=0).reset_index(name='sum').dropna()
+        general.columns = [type, 'sum']
+        type1 = str(type) +"1"
+        if col1 == str(type1):
+            general_new = general
+        else:
+            general_new = pd.concat([general_new, general]).groupby([type]).sum().reset_index()
+
+    general = general_new.sort_values(by=['sum'], ascending=False)
+    return general
 
 #MOST RATED CAST
 def cast_rate(db):
@@ -196,20 +227,17 @@ def movie_map(db):
 
 #FILTRAGGIO
 def filtering_op(cast,crew,num2):
-    num2 = int(num2)
 
-    #print("\nPer cosa vuoi filtrare?")
-    #for n in dict_crew:
-    #    print(str(n) + " - " + str(dict_crew[n]))
+    num2 = int(num2)
 
     for num in dict_crew:
         filter = num
-        print("\nTop 10 " + dict_crew[int(filter)] + ":")
+
 
         if int(filter) == 0:
-            #cast = pd.read_csv("output/cast_count.csv")
-            #cast = pd.DataFrame(cast)
             cast.columns = ['id', 'sum']
+            print("\nNumber of different " + str(dict_crew[int(filter)]) + ": " + str(len(filtering)))
+            print("TOP 10 " + str(dict_crew[int(filter)]) + ":")
             filtering = cast.head(num2).reset_index()
 
         if int(filter) == 1:
@@ -220,12 +248,16 @@ def filtering_op(cast,crew,num2):
             crew = crew['sum']
             crew = pd.concat([crew2, crew], axis=1)
             filtering = crew[crew['role'] == filter]
+            print("\nNumber of different " + str(filter) + ": " + str(len(filtering)))
+            print("TOP 10 " + str(filter) + ":")
             filtering = filtering.head(num2).reset_index()
 
         else:
             try:
                 filter = dict_crew[int(filter)]
                 filtering = crew[crew['role'] == filter]
+                print("\nNumber of different " + str(filter) + ": "+ str(len(filtering)))
+                print("TOP 10 " + str(filter) + ":")
                 filtering = filtering.head(num2).reset_index()
             except:
                 pass
