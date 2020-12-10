@@ -15,3 +15,6 @@ Get stats from your letterboxd export zip file.
 
 ## Bugs
 - TV episodes are not fully scraped.
+
+## Future development
+- Adding letterboxd custom link.
