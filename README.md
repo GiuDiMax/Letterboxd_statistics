@@ -3,6 +3,8 @@ Get stats from your letterboxd export zip file.
 
 ## Features
 - Stats about crew and cast;
+- Affinity between two users rating-based;
+- Refactor databse for MovieLens;
 - General stats about countries, languages, genres, total runtime;
 - Stats by year;
 - Movie Map.
