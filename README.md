@@ -10,6 +10,3 @@ Get stats from your letterboxd export zip file.
 ## Bugs
 - TV episodes are not scraped;
 - Ratings are not updated if they change.
-
-## Future developments
-- General stats (runtime, most used language, most present country).
