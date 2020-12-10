@@ -7,6 +7,7 @@ Get stats from your letterboxd export zip file.
 - Refactor databse for MovieLens;
 - General stats about countries, languages, genres, total runtime;
 - Stats by year;
+- Update databse without analyze everything again;
 - Movie Map.
 
 ## Usage
