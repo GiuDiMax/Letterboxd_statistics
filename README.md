@@ -12,4 +12,4 @@ Get stats from your letterboxd export zip file.
 - Ratings are not updated if they change.
 
 ## Future developments
-- Filtering per year.
+- General stats (runtime, most used language, most present country).
