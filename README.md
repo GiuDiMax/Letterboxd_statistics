@@ -1,6 +1,12 @@
 # Letterboxd statistics
 Get stats from your letterboxd export zip file.
 
+## Features
+- Stats about crew and cast;
+- General stats about countries, languages, genres, total runtime;
+- Stats by year;
+- Movie Map.
+
 ## Usage
 - Install requirements.txt;
 - Write your TMDB API key in config file, to obtain it follow this guide: https://developers.themoviedb.org/3/getting-started/introduction;
