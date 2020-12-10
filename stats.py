@@ -9,9 +9,11 @@ dict_crew = {
     1: "Director",
     2: "Producer",
     3: "Writer",
-    4: "Editor",
+    4: "Editor"
+}
+
+'''
     5: "Director of Photography"
-    '''
     6: "Sound",
     7: "Production Designer",
     8: "Art Direction",
@@ -20,8 +22,7 @@ dict_crew = {
     11: "Original Music Composer",
     12: "Costume Design",
     13: "Makeup Department Head"
-    '''
-}
+'''
 
 #GENERAL STATS
 def general(db,diary):
@@ -233,12 +234,11 @@ def filtering_op(cast,crew,num2):
     for num in dict_crew:
         filter = num
 
-
         if int(filter) == 0:
             cast.columns = ['id', 'sum']
+            filtering = cast.head(num2).reset_index()
             print("\nNumber of different " + str(dict_crew[int(filter)]) + ": " + str(len(filtering)))
             print("TOP 10 " + str(dict_crew[int(filter)]) + ":")
-            filtering = cast.head(num2).reset_index()
 
         if int(filter) == 1:
             filter = dict_crew[int(filter)]
