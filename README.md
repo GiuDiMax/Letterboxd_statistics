@@ -16,7 +16,8 @@ Get stats from your letterboxd export zip file.
 - Run main.py.
 
 ## Bugs
-- TV episodes are not fully scraped.
+- TV episodes are not fully scraped;
+- No multi-user support.
 
 ## Future development
 - Adding letterboxd custom link.
