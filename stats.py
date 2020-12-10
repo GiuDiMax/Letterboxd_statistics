@@ -4,20 +4,35 @@ from time import sleep
 import sys
 from gettinginfo_tmdb import *
 
+dict_crew = {
+    0: "Actors",
+    1: "Director",
+    2: "Producer",
+    3: "Writer",
+    4: "Editor",
+    5: "Director of Photography",
+    6: "Sound",
+    7: "Production Designer",
+    8: "Art Direction",
+    9: "Set Decoration",
+    10: "Visual Effects",
+    11: "Original Music Composer",
+    12: "Costume Design",
+    13: "Makeup Department Head"
+}
+
+#GENERAL STATS
+def general(db,diary):
+    print("COMING SOON")
+
 #WATCHED MOVIES BY RELEASE YEAR
-def watched_by_release_year():
-    watched = pd.read_csv("input/watched.csv")
-    watched = pd.DataFrame(watched)
+def watched_by_release_year(watched):
     range = watched['Year'].max() - watched['Year'].min()
     plt.hist(watched['Year'], bins=range + 1, rwidth=0.8)
     plt.show()
 
 #NUM OF MOVIES WATCH BY YEAR
-def watched_by_year():
-    diary = pd.read_csv("input/diary.csv")
-    diary = pd.DataFrame(diary)
-    diary = diary['Watched Date'].str.split("-", expand=True)
-    diary = (diary.iloc[:, 0])
+def watched_by_year(diary):
     max = int(diary.max())
     min = int(diary.min())
     range = max - min
@@ -25,9 +40,7 @@ def watched_by_year():
     plt.show()
 
 #MOST FREQUENT CREW CSV
-def crew_count():
-    db = pd.read_csv("output/database.csv", low_memory=False)
-    db = pd.DataFrame(db)
+def crew_count(db):
     filter_col = [col for col in db if col.startswith('crew')]
     x = 0
     for col1 in filter_col:
@@ -47,13 +60,10 @@ def crew_count():
 
     crew = crew_new.sort_values(by=['sum'], ascending=False)
     #crew.to_csv(r'output/crew_count.csv', index=False, header=True)
-    print(crew)
     return crew
 
 #MOST FREQUENT CAST CSV
-def cast_count():
-    db = pd.read_csv("output/database.csv", low_memory=False)
-    db = pd.DataFrame(db)
+def cast_count(db):
     filter_col = [col for col in db if col.startswith('cast')]
     x = 0
     for col1 in filter_col:
@@ -76,9 +86,7 @@ def cast_count():
     return cast
 
 #MOST RATED CAST
-def cast_rate():
-    db = pd.read_csv("output/database.csv", low_memory=False)
-    db = pd.DataFrame(db)
+def cast_rate(db):
     filter_col = [col for col in db if col.startswith('cast')]
     x = 0
     for col1 in filter_col:
@@ -109,9 +117,7 @@ def cast_rate():
     return cast
 
 
-def crew_rate():
-    db = pd.read_csv("output/database.csv", low_memory=False)
-    db = pd.DataFrame(db)
+def crew_rate(db):
     filter_col = [col for col in db if col.startswith('crew')]
     x = 0
     for col1 in filter_col:
@@ -142,9 +148,7 @@ def crew_rate():
     return crew
 
 #MOVIE MAP
-def movie_country():
-    db = pd.read_csv("output/database.csv", low_memory=False)
-    db = pd.DataFrame(db)
+def movie_country(db):
     filter_col = [col for col in db if col.startswith('country')]
     x = 0
     for col1 in filter_col:
@@ -191,23 +195,8 @@ def movie_map(db):
     fig.show()
 
 #FILTRAGGIO
-def filtering_op(cast,crew):
-    dict_crew = {
-        0: "Actors",
-        1: "Director",
-        2: "Producer",
-        3: "Writer",
-        4: "Editor",
-        5: "Director of Photography",
-        6: "Sound",
-        7: "Production Designer",
-        8: "Art Direction",
-        9: "Set Decoration",
-        10: "Visual Effects",
-        11: "Original Music Composer",
-        12: "Costume Design",
-        13: "Makeup Department Head"
-    }
+def filtering_op(cast,crew,num2):
+    num2 = int(num2)
 
     #print("\nPer cosa vuoi filtrare?")
     #for n in dict_crew:
@@ -221,7 +210,7 @@ def filtering_op(cast,crew):
             #cast = pd.read_csv("output/cast_count.csv")
             #cast = pd.DataFrame(cast)
             cast.columns = ['id', 'sum']
-            filtering = cast.head(10).reset_index()
+            filtering = cast.head(num2).reset_index()
 
         if int(filter) == 1:
             filter = dict_crew[int(filter)]
@@ -231,13 +220,13 @@ def filtering_op(cast,crew):
             crew = crew['sum']
             crew = pd.concat([crew2, crew], axis=1)
             filtering = crew[crew['role'] == filter]
-            filtering = filtering.head(10).reset_index()
+            filtering = filtering.head(num2).reset_index()
 
         else:
             try:
                 filter = dict_crew[int(filter)]
                 filtering = crew[crew['role'] == filter]
-                filtering = filtering.head(10).reset_index()
+                filtering = filtering.head(num2).reset_index()
             except:
                 pass
 
@@ -249,23 +238,8 @@ def filtering_op(cast,crew):
             print(str(n + 1) + "\t" + str(name) + "\t" + str(filtering.at[n, 'sum']))
             n = n + 1
 
-def filtering_op_avg(cast,crew):
-    dict_crew = {
-        0: "Actors",
-        1: "Director",
-        2: "Producer",
-        3: "Writer",
-        4: "Editor",
-        5: "Director of Photography",
-        6: "Sound",
-        7: "Production Designer",
-        8: "Art Direction",
-        9: "Set Decoration",
-        10: "Visual Effects",
-        11: "Original Music Composer",
-        12: "Costume Design",
-        13: "Makeup Department Head"
-    }
+def filtering_op_avg(cast,crew,num2):
+    num2 = int(num2)
 
     for num in dict_crew:
         filter = num
@@ -273,7 +247,7 @@ def filtering_op_avg(cast,crew):
 
         if int(filter) == 0:
             cast.columns = ['id', 'sum', 'avg']
-            filtering = cast.head(10).reset_index()
+            filtering = cast.head(num2).reset_index()
 
         if int(filter) == 1:
             filter = dict_crew[int(filter)]
@@ -282,13 +256,13 @@ def filtering_op_avg(cast,crew):
             crew = crew.drop(columns='crew')
             crew = pd.concat([crew2, crew], axis=1)
             filtering = crew[crew['role'] == filter]
-            filtering = filtering.head(10).reset_index()
+            filtering = filtering.head(num2).reset_index()
 
         else:
             try:
                 filter = dict_crew[int(filter)]
                 filtering = crew[crew['role'] == filter]
-                filtering = filtering.head(10).reset_index()
+                filtering = filtering.head(num2).reset_index()
             except:
                 pass
 

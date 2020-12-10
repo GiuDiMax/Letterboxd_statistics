@@ -1,9 +1,10 @@
 dict_operations = {
     0: "Construction/Updating of the general DB;",
-    1: "Obtain stats;",
-    2: "Refactor in IMDb (useful for Movielens);",
-    3: "Affinity between two users;",
-    4: "Exit"
+    1: "Obtain all-time stats;",
+    2: "Obtain stats for a specific watching year;",
+    3: "Refactor in IMDb (useful for Movielens);",
+    4: "Affinity between two users;",
+    5: "Exit"
 }
 
 def menu():
@@ -25,69 +26,46 @@ def menu():
             from expand import expand
             expand()
         if filter == 1:
-            dict_stats = {
-                0: "Films viewed by year of release;",
-                1: "Films viewed by year of viewing;",
-                2: "Most frequent people in the database;",
-                3: "Most liked people in the database;",
-                4: "Map;",
-                5: "Back;",
-                6: "Exit"
-            }
-            print("\nSTATS\nWhat do you want to do?")
-            for n2 in dict_stats:
-                print(str(n2) + " - " + str(dict_stats[n2]))
-            filter2 = int(input())
-            if filter2 == 0:
-                try:
-                    from stats import watched_by_release_year
-                    watched_by_release_year()
-                except:
-                    print("\nError, check that you have built the main DB")
-                    pass
-            if filter2 == 1:
-                try:
-                    from stats import watched_by_year
-                    watched_by_year()
-                except:
-                    print("\nError, check that you have built the main DB")
-                    pass
-            if filter2 == 2:
-                try:
-                    from stats import filtering_op,crew_count,cast_count
-                    print("\nCrew Count...")
-                    crew = crew_count()
-                    print("\nCast Count...")
-                    cast = cast_count()
-                    print("\n")
-                    filtering_op(cast, crew)
-                except:
-                    print("\nError, check that you have built the main DB")
-                    pass
-            if filter2 == 3:
-                try:
-                    from stats import filtering_op_avg,cast_rate,crew_rate
-                    print("\nCrew Count...")
-                    crew = crew_rate()
-                    print("\nCast Count...")
-                    cast = cast_rate()
-                    print("\n")
-                    filtering_op_avg(cast, crew)
-                except:
-                    print("\nError, check that you have built the main DB")
-                    pass
-            if filter2 == 4:
-                try:
-                    from stats import movie_map, movie_country
-                    db = movie_country()
-                    movie_map(db)
-                except:
-                    print("\nError, check that you have built the main DB")
-                    pass
-            if filter2 == 5:
-                menu()
-            if filter2 == 6:
-                break
+            from stats_menu import stats_menu
+            import pandas as pd
+
+            db = pd.read_csv("output/database.csv", low_memory=False)
+            db = pd.DataFrame(db)
+
+            diary = pd.read_csv("input/diary.csv")
+            diary = pd.DataFrame(diary)
+            diary = diary['Watched Date'].str.split("-", expand=True)
+            diary = (diary.iloc[:, 0])
+
+            watched = pd.read_csv("input/watched.csv")
+            watched = pd.DataFrame(watched)
+
+            stats_menu(db, watched, diary)
+
+        if filter == 2:
+
+            year_filter = input("\nWhat year? ")
+
+            from stats_menu import stats_menu2
+            import pandas as pd
+
+            diary = pd.read_csv("input/diary.csv")
+            diary = pd.DataFrame(diary)
+            diary = diary[diary['Watched Date'].str.startswith(year_filter)]
+            #diary = (diary.iloc[:, 0])
+
+            watched = pd.read_csv("input/watched.csv")
+            watched = pd.DataFrame(watched)
+
+            db2 = pd.merge(diary,watched,on=['Name','Year'])
+            watched = db2[['Date_x', 'Name', 'Year', 'Letterboxd URI_y']]
+            watched.columns=['Date', 'Name', 'Year', 'Letterboxd URI']
+            db2 = db2['Letterboxd URI_y'].str.replace('https://boxd.it/','')
+
+            db = pd.read_csv("output/database.csv", low_memory=False)
+            db = pd.DataFrame(db)
+            db = db[db['uri'].isin(db2)].reset_index()
+            stats_menu2(db, watched)
 
         if filter == 3:
             try:
