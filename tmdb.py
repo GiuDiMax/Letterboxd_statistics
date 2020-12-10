@@ -60,6 +60,7 @@ def tmdb_py():
               + " complete row, there are new " + str(numrow) + "\n")
 
     film = film.iloc[:, 0:7]
+    film.columns = ['Date', 'Name', 'Year', 'uri', 'Rating', 'watched', 'rewatch']
     numrow = len(film)
     x = -1
     e = -1
@@ -103,11 +104,9 @@ def tmdb_py():
                 if str(type2) == 'movie':
                     check, final = movie_information_saving(final, x, tmdb_id, uri, rate, watched, rewatch)
                 if str(type2) == 'tv':
-                    check, final = serie_information_saving(final, x, tmdb_id, uri, rate, imdb_id,
-                                                            type2, watched, rewatch)
+                    check, final = serie_information_saving(final, x, tmdb_id, uri, rate, imdb_id, type2, watched, rewatch)
                 if str(type2) == 'tv_episode':
-                    check, final = episode_information_saving_0(final, x, tmdb_id, uri, rate, imdb_id, type2, title2,
-                                                                year2, watched, rewatch)
+                    check, final = generic_information_saving(final, x, tmdb_id, uri, rate, imdb_id, type2, title2, year2, watched, rewatch)
             except:
                 pass
 
@@ -116,8 +115,7 @@ def tmdb_py():
             errori = (str(errori) + "\n- " + str(title2))
             type2 = 'not found'
             imdb_id = 'tt0000000'
-            check, final = episode_information_saving_0(final, x, tmdb_id, uri, rate, imdb_id,
-                                                        type2, title2, year2, watched, rewatch)
+            check, final = generic_information_saving(final, x, tmdb_id, uri, rate, imdb_id, type2, title2, year2, watched, rewatch)
 
         if (x + 1) % 10 == 0:
             if esiste == 1:

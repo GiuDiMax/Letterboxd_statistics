@@ -66,5 +66,7 @@ def obtain_runtime(url):
     runtime = html[start_index - 15 :start_index]
     runtime = runtime.replace("	","")
     runtime = runtime.replace(",", "")
+    runtime = runtime.replace(">", "")
+    runtime = runtime.replace("", "")
     runtime = (str.split(runtime,"&"))[0]
     return(int(runtime))

@@ -16,7 +16,6 @@ def serie_information_saving(final,x,tmdb_id,uri,rate,imdb_id, type, watched, re
         genre = response['genres']
         language = response['spoken_languages']
         country = response['production_countries']
-        type = response['type']
         studios = response['production_companies']
 
         final.at[x, 'uri'] = uri
@@ -132,7 +131,7 @@ def movie_information_saving(final,x,id,uri,rate, watched, rewatch):
     check = 'ok'
     return [check,final]
 
-def episode_information_saving_0(final, x, tmdb_id, uri, rate, imdb_id, type, title, year, watched, rewatch):
+def generic_information_saving(final, x, tmdb_id, uri, rate, imdb_id, type, title, year, watched, rewatch):
     try:
 
         final.at[x, 'uri'] = uri
@@ -142,8 +141,11 @@ def episode_information_saving_0(final, x, tmdb_id, uri, rate, imdb_id, type, ti
         final.at[x, 'release'] = year
         # final.at[x, 'genre'] = genre
         from web_scraping import obtain_runtime
-        runtime = obtain_runtime(uri)
-        final.at[x, 'runtime'] = runtime
+        try:
+            runtime = obtain_runtime(uri)
+            final.at[x, 'runtime'] = runtime
+        except:
+            pass
         final.at[x, 'type'] = type
         final.at[x, 'rate'] = rate
         final.at[x, 'watched'] = watched

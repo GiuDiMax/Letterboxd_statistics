@@ -65,7 +65,7 @@ def menu():
             db = pd.DataFrame(db)
             db = db[db['watched'].notna()]
             db = db[db['watched'].str.startswith(year_filter)]
-            stats_menu2(db, watched, diary)
+            stats_menu2(db, watched, diary, year_filter)
 
         if filter == 3:
             try:

@@ -28,8 +28,8 @@ dict_crew = {
 def general(db,diary):
     sum = db['runtime'].sum()
     sum = (sum/60)
-    print("\nTOTAL RUNTIME: "+str(round(sum,3)) +" hours")
-    print("TOTAL MOVIES WATCHED (included rewatch): " + str(len(db)))
+    print("\nTotal runtime: "+str(round(sum,3)) +" hours")
+    print("Total movies watched (included rewatch): " + str(len(db)))
     types = ['language','country','genre','studios']
     for type in types:
         gen = general_count(db,type)
@@ -237,7 +237,7 @@ def filtering_op(cast,crew,num2):
         if int(filter) == 0:
             cast.columns = ['id', 'sum']
             filtering = cast.head(num2).reset_index()
-            print("\nNumber of different " + str(dict_crew[int(filter)]) + ": " + str(len(filtering)))
+            print("\nNumber of different " + str(dict_crew[int(filter)]) + ": " + str(len(filtering)+1))
             print("TOP 10 " + str(dict_crew[int(filter)]) + ":")
 
         if int(filter) == 1:
@@ -248,7 +248,7 @@ def filtering_op(cast,crew,num2):
             crew = crew['sum']
             crew = pd.concat([crew2, crew], axis=1)
             filtering = crew[crew['role'] == filter]
-            print("\nNumber of different " + str(filter) + ": " + str(len(filtering)))
+            print("\nNumber of different " + str(filter) + ": " + str(len(filtering)+1))
             print("TOP 10 " + str(filter) + ":")
             filtering = filtering.head(num2).reset_index()
 
@@ -256,7 +256,7 @@ def filtering_op(cast,crew,num2):
             try:
                 filter = dict_crew[int(filter)]
                 filtering = crew[crew['role'] == filter]
-                print("\nNumber of different " + str(filter) + ": "+ str(len(filtering)))
+                print("\nNumber of different " + str(filter) + ": "+ str(len(filtering)+1))
                 print("TOP 10 " + str(filter) + ":")
                 filtering = filtering.head(num2).reset_index()
             except:

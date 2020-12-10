@@ -71,7 +71,7 @@ def stats_menu(db, watched, diary):
         from main import menu
         menu()
 
-def stats_menu2(db, watched, diary):
+def stats_menu2(db, watched, diary, year_filter):
     try:
         dict_stats = {
             0: "General stats",
@@ -89,7 +89,13 @@ def stats_menu2(db, watched, diary):
         if filter2 == 0:
             try:
                 from stats import general
+                print("\nWatched " + str(len(db)) + " movies in " + str(year_filter))
+                db2 = db[db['release'].str.startswith(year_filter)]
+                percentage = int(((len(db2))/(len(db)))*100)
+                print("Watched " + str(len(db2)) + " "+ str(year_filter)+
+                      "'s movies ("+ str(percentage)+"%) of total")
                 general(db, diary)
+
             except:
                 print("\nError, check that you have built the main DB")
                 pass
