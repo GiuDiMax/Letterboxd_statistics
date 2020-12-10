@@ -56,5 +56,4 @@ def expand():
 
     #print("File espanso e salvato col nome di database.csv")
     final.to_csv(r'output/database.csv', index=False, header=True)
-
-expand()
+    print("File expanded successfully")

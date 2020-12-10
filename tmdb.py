@@ -10,6 +10,7 @@ def tmdb_py():
     tmdb.API_KEY = tmdb_api
     film = pd.read_csv("output/letterboxd_joined.csv")
     film.columns = ['Date', 'Name', 'Year', 'uri', 'Rating','watched','rewatch']
+    film2 = film
     esiste = 0
 
     try:
@@ -41,21 +42,21 @@ def tmdb_py():
     except:
         pass
 
+    '''
     if esiste == 1:
         si_o_no2 = input('\nDo you want to clean up the file excluding the incorrectly identified lines??'
                          '\nType yes (and then enter), otherwise just hit enter:')
         if si_o_no2 == 'yes':
             final_old = final_old[final_old.imdb_id != 'tt0000000']
             final_old = final_old[final_old['imdb_id'].notna()]
-            # film3 = final_old[final_old['imdb'].astype(str).str.startswith('tt')]
-            # final_old = film3
+    '''
 
     if esiste == 1:
         numrow_ori = len(film)
         film = pd.merge(film, final_old, on='uri', how='outer', indicator=True)
         film = film.loc[film['_merge'] == 'left_only']
         numrow = len(film)
-        print("\nAlready find " + str(numrow_ori - numrow)
+        print("Already find " + str(numrow_ori - numrow)
               + " complete row, there are new " + str(numrow) + "\n")
 
     film = film.iloc[:, 0:7]
@@ -131,17 +132,24 @@ def tmdb_py():
         sys.stdout.flush()
         sleep(0.25)
 
-    print("\n")
 
     if errori != "":
-        errori = "\nNot found titles: " + str(errori + ("\n"))
+        print("\n")
+        errori = "Not found titles: " + str(errori + ("\n"))
         print(errori)
 
     if esiste == 1:
         final = pd.concat([final_old, final])
         print("File merged successfully")
-    final.to_csv(r'output/tmdb_scrap.csv', index=False, header=True)
-    final.to_csv(r'output/tmdb_scrap.csv.bak', index=False, header=True)
+
+
+    film2 = film2[['uri','Rating','rewatch']]
+    final2 = final.merge(film2,on=['uri','rewatch'],how='left')
+    final2['rate'] = final2['Rating']
+    final2 = final2.drop(['Rating'], axis=1)
+
+    final2.to_csv(r'output/tmdb_scrap.csv', index=False, header=True)
+    final2.to_csv(r'output/tmdb_scrap.csv.bak', index=False, header=True)
     if os.path.exists("output/tmdb_scrap_middle_backup.csv"):
         os.remove("output/tmdb_scrap_middle_backup.csv")
     print("File saved successfully")
