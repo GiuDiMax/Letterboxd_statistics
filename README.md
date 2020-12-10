@@ -8,5 +8,4 @@ Get stats from your letterboxd export zip file.
 - Run main.py.
 
 ## Bugs
-- TV episodes are not fully scraped;
-- Ratings are not updated if they change.
+- TV episodes are not fully scraped.
