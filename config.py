@@ -1,1 +1,1 @@
-tmdb_api = 'qui'
+tmdb_api = 'API'
