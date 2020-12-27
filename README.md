@@ -24,4 +24,4 @@ Get stats from your letterboxd export zip file.
 - Adding letterboxd custom link.
 
 ## Changelog
-- 20.12.27: fast way to calculate people stats.
+- 20.12.27 - fast way to calculate people stats.
