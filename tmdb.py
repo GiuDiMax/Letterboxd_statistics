@@ -138,7 +138,7 @@ def tmdb_py():
 
     if esiste == 1:
         final = pd.concat([final_old, final])
-        print("File merged successfully")
+        print("\nFile merged successfully")
 
 
     film2 = film2[['uri','Rating','rewatch']]

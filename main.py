@@ -2,9 +2,10 @@ dict_operations = {
     0: "Construction/Updating of the general DB;",
     1: "Obtain all-time stats;",
     2: "Obtain stats for a specific watching year;",
-    3: "Refactor in IMDb (useful for Movielens);",
-    4: "Affinity between two users;",
-    5: "Exit"
+    3: "Obtain stats for a specific release year;",
+    4: "Refactor in IMDb (useful for Movielens);",
+    5: "Affinity between two users;",
+    6: "Exit"
 }
 
 def menu():
@@ -43,7 +44,6 @@ def menu():
             stats_menu(db, watched, diary)
 
         if filter == 2:
-
             year_filter = input("\nWhat year? ")
 
             from stats_menu import stats_menu2
@@ -68,6 +68,18 @@ def menu():
             stats_menu2(db, watched, diary, year_filter)
 
         if filter == 3:
+            year_filter = input("\nWhat year? ")
+
+            from stats_menu import stats_menu3
+            import pandas as pd
+
+            db = pd.read_csv("output/database.csv", low_memory=False)
+            db = pd.DataFrame(db)
+            db = db[db['release'].notna()]
+            db = db[db['release'].str.startswith(year_filter)]
+            stats_menu3 (db, year_filter)
+
+        if filter == 4:
             try:
                 from reformat_in_imdb import reformat_imdb
                 reformat_imdb()
@@ -75,14 +87,14 @@ def menu():
                 print("\nError, check that you have built the main DB")
                 pass
 
-        if filter == 4:
+        if filter == 5:
             from affinity import affinity
             user1 = input("Enter first username: ")
             user2 = input("Enter second username: ")
             affinity(user1, user2)
             pass
 
-        if filter == 5:
+        if filter == 6:
             break
             pass
 

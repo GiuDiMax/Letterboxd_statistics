@@ -69,4 +69,5 @@ def obtain_runtime(url):
     runtime = runtime.replace(">", "")
     runtime = runtime.replace("", "")
     runtime = (str.split(runtime,"&"))[0]
+    runtime = runtime.replace('"', "")
     return(int(runtime))

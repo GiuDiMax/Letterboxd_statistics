@@ -163,8 +163,8 @@ def crew_cast (final,people,x):
     cast_string = ""
     for person in cast:
         person_id = person['id']
-        #name = person['name']
-        cast_string = str(cast_string) + str(person_id) + ";"
+        name = person['name']
+        cast_string = str(cast_string) + str(person_id) + ":" + str(name) + ";"
     cast_string = cast_string[:-1]
     final.at[x, 'cast'] = cast_string
 
@@ -173,7 +173,7 @@ def crew_cast (final,people,x):
     for person in crew:
         person_id = person['id']
         role = person['job']
-        #name = person['name']
+        name = person['name']
         if role in ['Director','Producer','Writer','Editor',
                     'Director of Photography'
                     '''
@@ -183,7 +183,7 @@ def crew_cast (final,people,x):
                     'Makeup Department Head'
                     '''
                     ]:
-            crew_string = str(crew_string) + str(person_id) + ":" + str(role) + ";"
+            crew_string = str(crew_string) + str(person_id) + ":" + str(role) + ":" + str(name) + ";"
         else:
             pass
     crew_string = crew_string[:-1]
