@@ -21,6 +21,7 @@ Get stats from your letterboxd export zip file.
 - No multi-user support.
 
 ## Future development
+- Remove TMDB API for Letterboxd scraping;
 - Adding letterboxd custom link.
 
 ## Changelog
