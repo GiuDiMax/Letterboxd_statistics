@@ -1,1 +1,0 @@
-tmdb_api = 'API'
