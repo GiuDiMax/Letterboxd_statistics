@@ -1,0 +1,10 @@
+matplotlib==3.3.3
+tmdbsimple==2.6.6
+numpy~=1.20.0rc2
+pandas==1.1.4
+urllib3==1.26.2
+plotly==4.13.0
+pycountry==20.7.3
+requests~=2.25.1
+bs4~=0.0.1
+beautifulsoup4~=4.9.3
