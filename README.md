@@ -17,12 +17,11 @@ Get stats from your letterboxd export zip file.
 - Run main.py.
 
 ## Bugs
-- TV episodes are not fully scraped;
 - No multi-user support.
 
 ## Future development
-- Remove TMDB API for Letterboxd scraping;
 - Adding letterboxd custom link.
 
 ## Changelog
+- 20.12.31 - Letterboxd web scraping.
 - 20.12.27 - fast way to calculate people stats.
